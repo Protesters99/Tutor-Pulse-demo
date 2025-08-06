@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TutorPulse Profile</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      /* Custom styling for the switch (checkbox) */
+      .custom-switch {
+        position: relative;
+        display: inline-block;
+        width: 38px; /* Adjusted width for better appearance */
+        height: 22px; /* Adjusted height */
+      }
+
+      .custom-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+        border-radius: 34px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px; /* Adjusted size */
+        width: 16px; /* Adjusted size */
+        left: 3px; /* Adjusted position */
+        bottom: 3px; /* Adjusted position */
+        background-color: white;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: #2563eb; /* Blue-600 */
+      }
+
+      input:focus + .slider {
+        box-shadow: 0 0 1px #2563eb;
+      }
+
+      input:checked + .slider:before {
+        -webkit-transform: translateX(16px); /* Adjusted translation */
+        -ms-transform: translateX(16px); /* Adjusted translation */
+        transform: translateX(16px); /* Adjusted translation */
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white border-b sticky top-0 z-50">
+      <div
+        class="container mx-auto px-4 py-4 flex items-center justify-between"
+      >
+        <a href="/" class="flex items-center space-x-2">
+          <div
+            class="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center"
+          >
+            <span class="text-white font-bold text-sm">TP</span>
+          </div>
+          <span class="text-xl font-bold text-gray-900">TutorPulse</span>
+        </a>
+
+        <nav class="hidden md:flex items-center space-x-6">
+          <a href="/dashboard" class="text-gray-600 hover:text-gray-900">
+            Dashboard
+          </a>
+          <a href="/profile" class="text-blue-600 font-medium"> Profile </a>
+          <a href="/settings" class="text-gray-600 hover:text-gray-900">
+            Settings
+          </a>
+        </nav>
+
+        <div class="flex items-center space-x-3">
+          <button
+            class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors hover:bg-gray-100 h-9 px-4 py-2 text-gray-600"
+            type="button"
+            title="User Profile"
+          >
+            <!-- Feather Icon: User -->
+            <a href="#">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="w-4 h-4"
+              >
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </a>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Profile Overview -->
+        <div class="lg:col-span-1">
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+            <div class="flex flex-col space-y-1.5 p-6 text-center">
+              <div
+                class="w-24 h-24 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4"
+              >
+                <!-- Feather Icon: User -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="w-12 h-12 text-white"
+                >
+                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-semibold leading-none tracking-tight">
+                Sarah Johnson
+              </h3>
+              <p class="text-sm text-muted-foreground">
+                Mathematics & Science Tutor
+              </p>
+            </div>
+            <div class="p-6 pt-0 space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-600">Profile Completion</span>
+                <span class="text-sm font-medium">85%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  class="bg-blue-600 h-2 rounded-full"
+                  style="width: 85%"
+                ></div>
+              </div>
+
+              <div class="space-y-2">
+                <div class="flex items-center gap-2 text-sm">
+                  <!-- Feather Icon: MapPin -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="w-4 h-4 text-gray-400"
+                  >
+                    <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10z"></path>
+                    <path
+                      d="M12 22s-8-4.5-8-10a8 8 0 0 1 16 0c0 5.5-8 10-8 10z"
+                    ></path>
+                  </svg>
+                  <span>San Francisco Bay Area</span>
+                </div>
+                <div class="flex items-center gap-2 text-sm">
+                  <!-- Feather Icon: DollarSign -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="w-4 h-4 text-gray-400"
+                  >
+                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                    <path
+                      d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                    ></path>
+                  </svg>
+                  <span>$30-50/hour</span>
+                </div>
+                <div class="flex items-center gap-2 text-sm">
+                  <!-- Feather Icon: Clock -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="w-4 h-4 text-gray-400"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  <span>Available evenings & weekends</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="text-sm font-medium mb-2 block">Subjects</label>
+                <div class="flex flex-wrap gap-2">
+                  <span
+                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-blue-100 text-blue-800"
+                    >Mathematics</span
+                  >
+                  <span
+                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-blue-100 text-blue-800"
+                    >Physics</span
+                  >
+                  <span
+                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-blue-100 text-blue-800"
+                    >Chemistry</span
+                  >
+                  <span
+                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-blue-100 text-blue-800"
+                    >Algebra</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="rounded-lg border bg-card text-card-foreground shadow-sm mt-6"
+          >
+            <div class="flex flex-col space-y-1.5 p-6">
+              <h3 class="text-lg font-semibold leading-none tracking-tight">
+                Quick Stats
+              </h3>
+            </div>
+            <div class="p-6 pt-0 space-y-4">
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Applications Sent</span>
+                <span class="font-medium">127</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Response Rate</span>
+                <span class="font-medium">68%</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Active Students</span>
+                <span class="font-medium">12</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Avg. Rating</span>
+                <span class="font-medium">4.9/5</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Details -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Personal Information -->
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+            <div class="flex flex-col space-y-1.5 p-6">
+              <h3 class="text-2xl font-semibold leading-none tracking-tight">
+                Personal Information
+              </h3>
+              <p class="text-sm text-muted-foreground">
+                Update your basic profile information
+              </p>
+            </div>
+            <div class="p-6 pt-0 space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label
+                    for="firstName"
+                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >First Name</label
+                  >
+                  <input
+                    type="text"
+                    id="firstName"
+                    value="Sarah"
+                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                  />
+                </div>
+                <div>
+                  <label
+                    for="lastName"
+                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >Last Name</label
+                  >
+                  <input
+                    type="text"
+                    id="lastName"
+                    value="Johnson"
+                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  for="email"
+                  class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >Email</label
+                >
+                <input
+                  type="email"
+                  id="email"
+                  value="sarah.johnson@email.com"
+                  class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                />
+              </div>
+              <div>
+                <label
+                  for="phone"
+                  class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >Phone Number</label
+                >
+                <input
+                  type="text"
+                  id="phone"
+                  value="+1 (555) 123-4567"
+                  class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                />
+              </div>
+              <div>
+                <label
+                  for="bio"
+                  class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >Professional Bio</label
+                >
+                <textarea
+                  id="bio"
+                  rows="4"
+                  class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                >
+Experienced mathematics and science tutor with over 5 years of teaching experience. Specialized in helping high school students excel in algebra, calculus, physics, and chemistry. Patient, encouraging, and results-driven approach.</textarea
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Teaching Preferences -->
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+            <div class="flex flex-col space-y-1.5 p-6">
+              <h3 class="text-2xl font-semibold leading-none tracking-tight">
+                Teaching Preferences
+              </h3>
+              <p class="text-sm text-muted-foreground">
+                Set your subject areas and teaching preferences
+              </p>
+            </div>
+            <div class="p-6 pt-0 space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label
+                    for="subjects"
+                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >Primary Subjects</label
+                  >
+                  <div class="relative mt-1">
+                    <select
+                      id="subjects"
+                      class="appearance-none w-full rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500 p-2 pr-8"
+                      style="
+                        background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 20 20\' fill=\'none\' stroke=\'currentColor\'%3e%3cpath d=\'M6 9l4 4 4-4\'/%3e%3c/svg%3e');
+                        background-repeat: no-repeat;
+                        background-position: right 0.5rem center;
+                        background-size: 1em;
+                      "
+                      title="Primary Subjects"
+                    >
+                      <option value="" disabled selected>
+                        Select subjects
+                      </option>
+                      <option value="math">Mathematics</option>
+                      <option value="science">Science</option>
+                      <option value="english">English</option>
+                      <option value="history">History</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label
+                    for="gradeLevels"
+                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >Grade Levels</label
+                  >
+                  <div class="relative mt-1">
+                    <select
+                      id="gradeLevels"
+                      class="appearance-none w-full rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500 p-2 pr-8"
+                      style="
+                        background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 20 20\' fill=\'none\' stroke=\'currentColor\'%3e%3cpath d=\'M6 9l4 4 4-4\'/%3e%3c/svg%3e');
+                        background-repeat: no-repeat;
+                        background-position: right 0.5rem center;
+                        background-size: 1em;
+                      "
+                      title="Grade Levels"
+                    >
+                      <option value="" disabled selected>
+                        Select grade levels
+                      </option>
+                      <option value="elementary">Elementary</option>
+                      <option value="middle">Middle School</option>
+                      <option value="high">High School</option>
+                      <option value="college">College</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label
+                    for="minRate"
+                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >Minimum Hourly Rate</label
+                  >
+                  <input
+                    type="number"
+                    id="minRate"
+                    value="30"
+                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                  />
+                </div>
+                <div>
+                  <label
+                    for="maxRate"
+                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >Maximum Hourly Rate</label
+                  >
+                  <input
+                    type="number"
+                    id="maxRate"
+                    value="50"
+                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  for="location"
+                  class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >Preferred Location/Radius</label
+                >
+                <input
+                  type="text"
+                  id="location"
+                  value="San Francisco Bay Area - 25 miles"
+                  class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                />
+              </div>
+
+              <div class="space-y-3">
+                <label
+                  class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >Availability</label
+                >
+                <div class="space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm">Weekday Mornings</span>
+                    <label class="custom-switch">
+                      <input type="checkbox" />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm">Weekday Afternoons</span>
+                    <label class="custom-switch">
+                      <input type="checkbox" />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm">Weekday Evenings</span>
+                    <label class="custom-switch">
+                      <input type="checkbox" id="availability-evenings" checked title="Available Weekday Evenings" />
+                      <label for="availability-evenings" class="sr-only">Weekday Evenings Availability</label>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm">Weekends</span>
+                    <label class="custom-switch">
+                      <input type="checkbox" id="availability-weekends" checked title="Available Weekends" />
+                      <label for="availability-weekends" class="sr-only">Weekends Availability</label>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Documents -->
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+            <div class="flex flex-col space-y-1.5 p-6">
+              <h3 class="text-2xl font-semibold leading-none tracking-tight">
+                Documents & Credentials
+              </h3>
+              <p class="text-sm text-muted-foreground">
+                Upload your resume, certifications, and other credentials
+              </p>
+            </div>
+            <div class="p-6 pt-0 space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div
+                  class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+                >
+                  <!-- Feather Icon: FileText -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="w-8 h-8 text-gray-400 mx-auto mb-2"
+                  >
+                    <path
+                      d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                    ></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <line x1="10" y1="9" x2="8" y2="9"></line>
+                  </svg>
+                  <p class="text-sm text-gray-600 mb-2">Resume/CV</p>
+                  <p class="text-xs text-gray-500 mb-3">
+                    sarah_johnson_resume.pdf
+                  </p>
+                  <button
+                    class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"
+                    type="button"
+                  >
+                    <!-- Feather Icon: Upload -->
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="w-4 h-4 mr-2"
+                    >
+                      <path
+                        d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                      ></path>
+                      <polyline points="17 8 12 3 7 8"></polyline>
+                      <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    Update
+                  </button>
+                </div>
+
+                <div
+                  class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+                >
+                  <!-- Feather Icon: Award -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="w-8 h-8 text-gray-400 mx-auto mb-2"
+                  >
+                    <circle cx="12" cy="8" r="7"></circle>
+                    <polyline points="12 15 12 22"></polyline>
+                    <polyline points="17 18 12 22 7 18"></polyline>
+                  </svg>
+                  <p class="text-sm text-gray-600 mb-2">Certifications</p>
+                  <p class="text-xs text-gray-500 mb-3">
+                    teaching_certificate.pdf
+                  </p>
+                  <button
+                    class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"
+                    type="button"
+                  >
+                    <!-- Feather Icon: Upload -->
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="w-4 h-4 mr-2"
+                    >
+                      <path
+                        d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                      ></path>
+                      <polyline points="17 8 12 3 7 8"></polyline>
+                      <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    Update
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label
+                  for="coverLetter"
+                  class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >Cover Letter Template</label
+                >
+                <textarea
+                  id="coverLetter"
+                  rows="6"
+                  placeholder="Write a template cover letter that will be customized for each application..."
+                  class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                >
+Dear [Parent/Guardian Name],
+
+I am writing to express my interest in the tutoring position for [Student Name] in [Subject]. With over 5 years of experience in mathematics and science education, I am confident I can help your child achieve their academic goals.
+
+My approach focuses on building confidence through personalized learning strategies and clear explanations. I believe every student can succeed with the right support and encouragement.
+
+I would love to discuss how I can help [Student Name] excel in [Subject]. Please feel free to contact me to schedule a meeting.
+
+Best regards,
+Sarah Johnson</textarea
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-end space-x-3">
+            <button
+              class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"
+              type="button"
+            >
+              Cancel
+            </button>
+            <button
+              class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700 h-9 px-4 py-2"
+              type="button"
+            >
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

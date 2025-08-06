@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TutorPulse - Never Miss a Tutoring Opportunity Again</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Custom font for a modern look */
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0; /* Added for loading screen */
+        overflow: hidden; /* Added for loading screen to prevent scrollbars */
+      }
+      /* Basic styling for the card components to mimic Shadcn/ui look */
+      .card {
+        border-radius: 0.5rem; /* rounded-lg */
+        background-color: #fff; /* bg-white */
+        box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1),
+          0 1px 2px -1px rgb(0 0 0 / 0.1); /* shadow-sm */
+        padding: 1.5rem; /* p-6 */
+      }
+      .card-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* For centered icons and titles */
+        text-align: center;
+      }
+      .card-title {
+        font-size: 1.25rem; /* text-xl */
+        font-weight: 600; /* font-semibold */
+        margin-bottom: 0.5rem; /* mb-2 */
+      }
+      .card-description {
+        font-size: 1rem; /* text-base */
+        color: #6b7280; /* text-gray-600 */
+      }
+      /* Custom styles for buttons to match Shadcn/ui */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.5rem; /* rounded-md */
+        font-weight: 500; /* font-medium */
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+        padding: 0.75rem 1.25rem; /* px-4 py-2 */
+        font-size: 1rem; /* text-base */
+        line-height: 1.5rem; /* leading-6 */
+      }
+      .btn-primary {
+        background-color: #2563eb; /* blue-600 */
+        color: #ffffff; /* text-white */
+        border: 1px solid transparent;
+      }
+      /* Updated hover effect for primary buttons */
+      .btn-primary:hover {
+        background-color: #000; /* black */
+        color: #fff; /* white */
+      }
+      .btn-outline {
+        background-color: transparent;
+        color: #2563eb; /* blue-600 */
+        border: 1px solid #e5e7eb; /* border-gray-200 */
+      }
+      .btn-outline:hover {
+        background-color: #f3f4f6; /* gray-100 */
+      }
+      .btn-ghost {
+        background-color: transparent;
+        color: #6b7280; /* text-gray-600 */
+        border: 1px solid transparent;
+      }
+      .btn-ghost:hover {
+        background-color: #f3f4f6; /* gray-100 */
+        color: #1f2937; /* text-gray-900 */
+      }
+      .btn-lg {
+        padding: 1rem 2rem; /* px-8 py-4 */
+        font-size: 1.125rem; /* text-lg */
+      }
+      /* Badge styling */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 9999px; /* rounded-full */
+        padding: 0.25rem 0.75rem; /* px-3 py-1 */
+        font-size: 0.875rem; /* text-sm */
+        font-weight: 500; /* font-medium */
+      }
+      .badge-blue {
+        background-color: #dbeafe; /* blue-100 */
+        color: #1e40af; /* blue-800 */
+      }
+
+      /* --- Loading Screen Styles (merged from loading-screen-html) --- */
+      /* Loading Screen Container */
+      #loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          to br,
+          #eff6ff,
+          #e0e7ff
+        ); /* from-blue-50 to-indigo-100 */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999; /* Ensure it's on top of everything */
+        opacity: 1;
+        transition: opacity 0.5s ease-out; /* Smooth fade out */
+      }
+
+      /* Logo Container */
+      .loading-logo-container {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(
+          to right,
+          #2563eb,
+          #4f46e5
+        ); /* from-blue-600 to-indigo-600 */
+        border-radius: 16px; /* rounded-lg */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: bounceIn 1s ease-out forwards; /* Initial bounce animation */
+      }
+
+      .loading-logo-text {
+        color: white;
+        font-weight: bold;
+        font-size: 2.5rem; /* text-5xl equivalent for a larger logo */
+      }
+
+      /* TutorPulse Text Animation */
+      .loading-text {
+        font-size: 2.5rem; /* text-4xl equivalent */
+        font-weight: bold;
+        color: #1a202c; /* gray-900 */
+        margin-top: 1.5rem; /* mt-6 */
+        opacity: 0; /* Start hidden */
+        animation: fadeInScale 1s ease-out 0.5s forwards; /* Fade in and scale after logo */
+      }
+
+      .loading-text .gradient-text {
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        background-image: linear-gradient(
+          to right,
+          #2563eb,
+          #4f46e5
+        ); /* from-blue-600 to-indigo-600 */
+      }
+
+      /* Keyframe Animations */
+      @keyframes bounceIn {
+        0% {
+          transform: scale(0);
+          opacity: 0;
+        }
+        60% {
+          transform: scale(1.1);
+          opacity: 1;
+        }
+        80% {
+          transform: scale(0.95);
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeInScale {
+        0% {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Loading Screen HTML Structure -->
+    <div id="loading-screen">
+      <div class="loading-logo-container">
+        <span class="loading-logo-text">TP</span>
+      </div>
+      <div class="loading-text">
+        Tutor<span class="gradient-text">Pulse</span>
+      </div>
+    </div>
+
+    <!-- Main Content Wrapper (your existing page content will go inside this) -->
+    <div id="main-content" class="hidden">
+      <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+        <!-- Header -->
+        <header class="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+          <div
+            class="container mx-auto px-4 py-4 flex items-center justify-between"
+          >
+            <div class="flex items-center space-x-2">
+              <div
+                class="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center"
+              >
+                <i data-feather="zap" class="w-5 h-5 text-white"></i>
+              </div>
+              <span class="text-xl font-bold text-gray-900">TutorPulse</span>
+            </div>
+            <nav class="hidden md:flex items-center space-x-6">
+              <a href="#features" class="text-gray-600 hover:text-gray-900">
+                Features
+              </a>
+              <a href="#how-it-works" class="text-gray-600 hover:text-gray-900">
+                How It Works
+              </a>
+              <a href="/pricing/index.html" class="text-gray-600 hover:text-gray-900">
+                Pricing
+              </a>
+            </nav>
+            <div class="flex items-center space-x-3">
+              <button class="btn btn-ghost">
+                <a href="/sign-in/index.html">Sign In</a>
+              </button>
+              <a href="/sign-up/index.html" class="btn btn-primary">
+                Get Started
+              </a>
+            </div>
+          </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="py-20 px-4">
+          <div class="container mx-auto text-center">
+            <span class="badge badge-blue mb-4"
+              >🚀 Now with AutoApply Technology</span
+            >
+            <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+              Never Miss a
+              <span
+                class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"
+              >
+                Tutoring
+              </span>
+              Opportunity Again
+            </h1>
+            <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+              TutorPulse automatically scans job boards, finds perfect matches,
+              and applies on your behalf. Be the first applicant, every time.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="/sign-up/index.html" class="btn btn-primary btn-lg px-8">
+                Start Finding Jobs
+              </a>
+              <a
+                href="/dashboard"
+                class="btn btn-outline btn-lg px-8 bg-transparent"
+              >
+                Watch Demo
+              </a>
+            </div>
+            <div
+              class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
+            >
+              <div class="text-center">
+                <div class="text-3xl font-bold text-blue-600">24/7</div>
+                <div class="text-gray-600">Automated Scanning</div>
+              </div>
+              <div class="text-center">
+                <div class="text-3xl font-bold text-blue-600">&lt;30s</div>
+                <div class="text-gray-600">Application Speed</div>
+              </div>
+              <div class="text-center">
+                <div class="text-3xl font-bold text-blue-600">85%</div>
+                <div class="text-gray-600">Success Rate</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="py-20 px-4 bg-white">
+          <div class="container mx-auto">
+            <div class="text-center mb-16">
+              <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                Powerful Features for Modern Tutors
+              </h2>
+              <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Everything you need to stay ahead in the competitive tutoring
+                market
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div
+                class="card border-2 hover:border-blue-200 transition-colors"
+              >
+                <div class="card-header">
+                  <i
+                    data-feather="search"
+                    class="w-10 h-10 text-blue-600 mb-2"
+                  ></i>
+                  <h3 class="card-title">Real-Time Scanning</h3>
+                  <p class="card-description">
+                    Continuously monitors Indeed, Glassdoor, and local tutoring
+                    boards for new opportunities
+                  </p>
+                </div>
+              </div>
+
+              <div
+                class="card border-2 hover:border-blue-200 transition-colors"
+              >
+                <div class="card-header">
+                  <i
+                    data-feather="target"
+                    class="w-10 h-10 text-blue-600 mb-2"
+                  ></i>
+                  <h3 class="card-title">Smart Filtering</h3>
+                  <p class="card-description">
+                    Set custom filters for subjects, grade levels, hourly rates,
+                    and geographic radius
+                  </p>
+                </div>
+              </div>
+
+              <div
+                class="card border-2 hover:border-blue-200 transition-colors"
+              >
+                <div class="card-header">
+                  <i
+                    data-feather="bell"
+                    class="w-10 h-10 text-blue-600 mb-2"
+                  ></i>
+                  <h3 class="card-title">Instant Notifications</h3>
+                  <p class="card-description">
+                    Get push notifications the moment a matching opportunity is
+                    found
+                  </p>
+                </div>
+              </div>
+
+              <div
+                class="card border-2 hover:border-blue-200 transition-colors"
+              >
+                <div class="card-header">
+                  <i
+                    data-feather="zap"
+                    class="w-10 h-10 text-blue-600 mb-2"
+                  ></i>
+                  <h3 class="card-title">AutoApply Technology</h3>
+                  <p class="card-description">
+                    Automatically fill and submit applications using your stored
+                    resume and cover letter
+                  </p>
+                </div>
+              </div>
+
+              <div
+                class="card border-2 hover:border-blue-200 transition-colors"
+              >
+                <div class="card-header">
+                  <i
+                    data-feather="shield"
+                    class="w-10 h-10 text-blue-600 mb-2"
+                  ></i>
+                  <h3 class="card-title">Secure & Private</h3>
+                  <p class="card-description">
+                    AES-256 encryption protects your personal data and documents
+                  </p>
+                </div>
+              </div>
+
+              <div
+                class="card border-2 hover:border-blue-200 transition-colors"
+              >
+                <div class="card-header">
+                  <i
+                    data-feather="clock"
+                    class="w-10 h-10 text-blue-600 mb-2"
+                  ></i>
+                  <h3 class="card-title">Time Saving</h3>
+                  <p class="card-description">
+                    Eliminate hours of manual job searching and repetitive
+                    application filling
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- How It Works -->
+        <section id="how-it-works" class="py-20 px-4 bg-gray-50">
+          <div class="container mx-auto">
+            <div class="text-center mb-16">
+              <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                How TutorPulse Works
+              </h2>
+              <p class="text-xl text-gray-600">
+                Get started in minutes, start getting opportunities in hours
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div class="text-center">
+                <div
+                  class="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4"
+                >
+                  1
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Set Your Preferences</h3>
+                <p class="text-gray-600">
+                  Define your subjects, preferred grade levels, hourly rates,
+                  and location preferences
+                </p>
+              </div>
+
+              <div class="text-center">
+                <div
+                  class="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4"
+                >
+                  2
+                </div>
+                <h3 class="text-xl font-semibold mb-2">
+                  Upload Your Materials
+                </h3>
+                <p class="text-gray-600">
+                  Securely store your resume, cover letter template, and any
+                  certifications
+                </p>
+              </div>
+
+              <div class="text-center">
+                <div
+                  class="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4"
+                >
+                  3
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Let TutorPulse Work</h3>
+                <p class="text-gray-600">
+                  Sit back as we find matches and automatically apply on your
+                  behalf
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section
+          class="py-20 px-4 bg-gradient-to-r from-blue-600 to-indigo-600"
+        >
+          <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold text-white mb-4">
+              Ready to Transform Your Tutoring Career?
+            </h2>
+            <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+              Join thousands of tutors who are already using TutorPulse to find
+              more opportunities faster
+            </p>
+            <a
+              href="/sign-up/index.html"
+              class="btn btn-lg bg-white text-blue-600 hover:bg-black hover:text-white px-8"
+            >
+              Start Your Free Trial
+            </a>
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-gray-900 text-white py-12 px-4">
+          <div class="container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+              <div>
+                <div class="flex items-center space-x-2 mb-4">
+                  <div
+                    class="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center"
+                  >
+                    <i data-feather="zap" class="w-5 h-5 text-white"></i>
+                  </div>
+                  <span class="text-xl font-bold">TutorPulse</span>
+                </div>
+                <p class="text-gray-400">
+                  Automated job matching for modern tutors
+                </p>
+              </div>
+              <div>
+                <h4 class="font-semibold mb-4">Product</h4>
+                <ul class="space-y-2 text-gray-400">
+                  <li>
+                    <a href="#" class="hover:text-white"> Features </a>
+                  </li>
+                  <li>
+                    <a href="#" class="hover:text-white"> Pricing </a>
+                  </li>
+                  <li>
+                    <a href="#" class="hover:text-white"> API </a>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="font-semibold mb-4">Support</h4>
+                <ul class="space-y-2 text-gray-400">
+                  <li>
+                    <a href="#" class="hover:text-white"> Help Center </a>
+                  </li>
+                  <li>
+                    <a href="#" class="hover:text-white"> Contact </a>
+                  </li>
+                  <li>
+                    <a href="#" class="hover:text-white"> Status </a>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="font-semibold mb-4">Company</h4>
+                <ul class="space-y-2 text-gray-400">
+                  <li>
+                    <a href="#" class="hover:text-white"> About </a>
+                  </li>
+                  <li>
+                    <a href="#" class="hover:text-white"> Blog </a>
+                  </li>
+                  <li>
+                    <a href="#" class="hover:text-white"> Careers </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div
+              class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400"
+            >
+              <p>&copy; 2024 TutorPulse. All rights reserved.</p>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <!-- Feather Icons Script -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+      feather.replace();
+
+      // Function to hide the loading screen
+      function hideLoadingScreen() {
+        const loadingScreen = document.getElementById("loading-screen");
+        const mainContent = document.getElementById("main-content");
+
+        if (loadingScreen) {
+          loadingScreen.style.opacity = "0"; // Start fade out
+          loadingScreen.addEventListener(
+            "transitionend",
+            () => {
+              loadingScreen.style.display = "none"; // Hide after fade
+              if (mainContent) {
+                mainContent.classList.remove("hidden"); // Show main content
+                document.body.style.overflow = "auto"; // Re-enable scrolling
+              }
+            },
+            { once: true }
+          ); // Ensure listener runs only once
+        } else if (mainContent) {
+          // Fallback if loading screen not found, just show content
+          mainContent.classList.remove("hidden");
+          document.body.style.overflow = "auto"; // Re-enable scrolling
+        }
+      }
+
+      // Simulate content loading time
+      // In a real application, you would call hideLoadingScreen()
+      // after your main content (e.g., data fetching, component rendering) is ready.
+      window.addEventListener("load", () => {
+        // Simulate a minimum loading time of 2 seconds
+        setTimeout(hideLoadingScreen, 2000);
+      });
+    </script>
+  </body>
+</html>

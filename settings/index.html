@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TutorPulse Settings</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom styling for the switch component */
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 24px;
+        }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .custom-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .custom-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .custom-slider {
+            background-color: #2563eb; /* blue-600 */
+        }
+
+        input:focus + .custom-slider {
+            box-shadow: 0 0 1px #2563eb;
+        }
+
+        input:checked + .custom-slider:before {
+            -webkit-transform: translateX(16px);
+            -ms-transform: translateX(16px);
+            transform: translateX(16px);
+        }
+
+        /* Custom styling for the slider track and thumb */
+        input[type="range"] {
+            -webkit-appearance: none; /* Hides the default slider */
+            width: 100%; /* Full-width */
+            height: 8px; /* Specify a height */
+            background: #d1d5db; /* gray-300 */
+            outline: none; /* Remove outline */
+            opacity: 0.7; /* Set transparency (for hover effect to be seen) */
+            -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+            transition: opacity .2s;
+            border-radius: 4px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; /* Hides the default slider thumb */
+            appearance: none;
+            width: 20px; /* Set a specific slider handle width */
+            height: 20px; /* Slider handle height */
+            background: #2563eb; /* blue-600 */
+            cursor: pointer; /* Cursor on hover */
+            border-radius: 50%;
+            margin-top: -6px; /* Center the thumb vertically */
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25); /* blue-500 with opacity */
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px; /* Set a specific slider handle width */
+            height: 20px; /* Slider handle height */
+            background: #2563eb; /* blue-600 */
+            cursor: pointer; /* Cursor on hover */
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25); /* blue-500 with opacity */
+        }
+
+        /* Notification styling */
+        #notification-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none; /* Allows clicks to pass through to elements behind */
+        }
+
+        .notification-item {
+            background-color: #dcfce7; /* green-100 */
+            color: #166534; /* green-800 */
+            padding: 8px 15px; /* Smaller padding */
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transform: translateX(100%);
+            animation: fadeInRight 0.3s forwards, fadeOut 0.5s forwards 2.5s; /* Fade in, then fade out after 2.5s delay */
+            min-width: 180px; /* Slightly smaller min-width */
+            max-width: 280px; /* Slightly smaller max-width */
+            word-wrap: break-word;
+            pointer-events: auto; /* Re-enable pointer events for the notification itself */
+            font-size: 0.875rem; /* text-sm */
+            border: 1px solid #86efac; /* green-300 for border */
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white border-b sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="/" class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-sm">TP</span>
+                </div>
+                <span class="text-xl font-bold text-gray-900">TutorPulse</span>
+            </a>
+
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="/dashboard" class="text-gray-600 hover:text-gray-900">
+                    Dashboard
+                </a>
+                <a href="/profile" class="text-gray-600 hover:text-gray-900">
+                    Profile
+                </a>
+                <a href="/settings" class="text-blue-600 font-medium">
+                    Settings
+                </a>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-3"
+                    title="Notifications">
+                    <i data-feather="user" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto space-y-6">
+            <!-- AutoApply Settings -->
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                <div class="flex flex-col space-y-1.5 p-6">
+                    <div class="flex items-center gap-2">
+                        <i data-feather="zap" class="w-5 h-5 text-blue-600"></i>
+                        <h3 class="font-semibold whitespace-nowrap leading-none tracking-tight">AutoApply Settings</h3>
+                    </div>
+                    <p class="text-sm text-muted-foreground text-gray-600">Configure automatic job application preferences and rules</p>
+                </div>
+                <div class="p-6 pt-0 space-y-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <label class="text-base font-medium">Enable AutoApply</label>
+                            <p class="text-sm text-gray-600">Automatically apply to jobs that match your criteria</p>
+                        </div>
+                        <label class="custom-switch">
+                            <input type="checkbox" id="enableAutoApply" checked>
+                            <span class="custom-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label for="applicationFrequency" class="text-sm font-medium mb-2 block">Application Frequency</label>
+                            <div class="relative">
+                                <select id="applicationFrequency" class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1">
+                                    <option value="immediate">Apply Immediately</option>
+                                    <option value="hourly">Every Hour</option>
+                                    <option value="daily">Daily Batch</option>
+                                    <option value="manual">Manual Review</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-sm font-medium mb-2 block">
+                                Maximum Applications per Day: <span id="applications-value" class="text-blue-600">15</span>
+                            </label>
+                            <input type="range" min="1" max="50" value="15" step="1" class="w-full" id="applications-slider">
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>1</span>
+                                <span>50</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="jobMatchScore" class="text-sm font-medium mb-2 block">Minimum Job Match Score</label>
+                            <div class="relative">
+                                <select id="jobMatchScore" class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1">
+                                    <option value="60">60% - Apply to more jobs</option>
+                                    <option value="70">70% - Balanced approach</option>
+                                    <option value="80" selected>80% - High quality matches</option>
+                                    <option value="90">90% - Only perfect matches</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <label class="text-sm font-medium">AutoApply Rules</label>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm">Skip jobs requiring specific certifications I don't have</span>
+                                    <label class="custom-switch">
+                                        <input type="checkbox" id="skipCertifications" checked>
+                                        <span class="custom-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm">Only apply to jobs within my rate range</span>
+                                    <label class="custom-switch">
+                                        <input type="checkbox" id="onlyRateRange" checked>
+                                        <span class="custom-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm">Avoid jobs with negative keywords (e.g., "unpaid", "volunteer")</span>
+                                    <label class="custom-switch">
+                                        <input type="checkbox" id="avoidNegativeKeywords" checked>
+                                        <span class="custom-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm">Prioritize jobs posted in the last 2 hours</span>
+                                    <label class="custom-switch">
+                                        <input type="checkbox" id="prioritizeRecentJobs">
+                                        <span class="custom-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Settings -->
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                <div class="flex flex-col space-y-1.5 p-6">
+                    <div class="flex items-center gap-2">
+                        <i data-feather="bell" class="w-5 h-5 text-blue-600"></i>
+                        <h3 class="font-semibold whitespace-nowrap leading-none tracking-tight">Notification Preferences</h3>
+                    </div>
+                    <p class="text-sm text-muted-foreground text-gray-600">Choose how and when you want to be notified about new opportunities</p>
+                </div>
+                <div class="p-6 pt-0 space-y-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <i data-feather="smartphone" class="w-4 h-4 text-gray-400"></i>
+                                <div>
+                                    <label class="text-base font-medium">Push Notifications</label>
+                                    <p class="text-sm text-gray-600">Get instant alerts on your mobile device</p>
+                                </div>
+                            </div>
+                            <label class="custom-switch">
+                                <input type="checkbox" id="pushNotifications" checked>
+                                <span class="custom-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <i data-feather="mail" class="w-4 h-4 text-gray-400"></i>
+                                <div>
+                                    <label class="text-base font-medium">Email Notifications</label>
+                                    <p class="text-sm text-gray-600">Receive job alerts via email</p>
+                                </div>
+                            </div>
+                            <label class="custom-switch">
+                                <input type="checkbox" id="emailNotifications">
+                                <span class="custom-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <i data-feather="message-square" class="w-4 h-4 text-gray-400"></i>
+                                <div>
+                                    <label class="text-base font-medium">SMS Notifications</label>
+                                    <p class="text-sm text-gray-600">Get text messages for urgent matches</p>
+                                </div>
+                            </div>
+                            <label class="custom-switch">
+                                <input type="checkbox" id="smsNotifications">
+                                <span class="custom-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="text-sm font-medium">Notification Types</label>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">New job matches</span>
+                                <label class="custom-switch">
+                                    <input type="checkbox" id="notifyNewJobMatches" checked>
+                                    <span class="custom-slider"></span>
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">AutoApply confirmations</span>
+                                <label class="custom-switch">
+                                    <input type="checkbox" id="notifyAutoApplyConfirmations" checked>
+                                    <span class="custom-slider"></span>
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">Application responses</span>
+                                <label class="custom-switch">
+                                    <input type="checkbox" id="notifyApplicationResponses" checked>
+                                    <span class="custom-slider"></span>
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">Weekly summary reports</span>
+                                <label class="custom-switch">
+                                    <input type="checkbox" id="notifyWeeklySummary">
+                                    <span class="custom-slider"></span>
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">System maintenance alerts</span>
+                                <label class="custom-switch">
+                                    <input type="checkbox" id="notifyMaintenanceAlerts">
+                                    <span class="custom-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-sm font-medium mb-2 block">Quiet Hours</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="quietHoursFrom" class="text-xs text-gray-600">From</label>
+                                <input type="time" id="quietHoursFrom" value="22:00" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                            </div>
+                            <div>
+                                <label for="quietHoursTo" class="text-xs text-gray-600">To</label>
+                                <input type="time" id="quietHoursTo" value="08:00" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Preferences -->
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                <div class="flex flex-col space-y-1.5 p-6">
+                    <div class="flex items-center gap-2">
+                        <i data-feather="globe" class="w-5 h-5 text-blue-600"></i>
+                        <h3 class="font-semibold whitespace-nowrap leading-none tracking-tight">Search Preferences</h3>
+                    </div>
+                    <p class="text-sm text-muted-foreground text-gray-600">Configure which job boards and sources to monitor</p>
+                </div>
+                <div class="p-6 pt-0 space-y-6">
+                    <div class="space-y-3">
+                        <label class="text-sm font-medium">Active Job Sources</label>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm">Indeed.com</span>
+                                    <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-gray-100 text-gray-800">
+                                        High Volume
+                                    </span>
+                                </div>
+                                <label class="custom-switch">
+                                    <input type="checkbox" id="sourceIndeed" checked>
+                                    <span class="custom-slider"></span>
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm">Care.com</span>
+                                    <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-gray-100 text-gray-800">
+                                        Tutoring Focused
+                                    </span>
+                                </div>
+                                <label class="custom-switch">
+                                    <input type="checkbox" id="sourceCare" checked>
+                                    <span class="custom-slider"></span>
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm">Wyzant</span>
+                                    <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-gray-100 text-gray-800">
+                                        Premium
+                                    </span>
+                                </div>
+                                <label class="custom-switch">
+                                    <input type="checkbox" id="sourceWyzant" checked>
+                                    <span class="custom-slider"></span>
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm">Tutor.com</span>
+                                    <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-gray-100 text-gray-800">
+                                        Online
+                                    </span>
+                                </div>
+                                <label class="custom-switch">
+                                    <input type="checkbox" id="sourceTutorCom">
+                                    <span class="custom-slider"></span>
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm">Local Facebook Groups</span>
+                                    <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-gray-100 text-gray-800">
+                                        Community
+                                    </span>
+                                </div>
+                                <label class="custom-switch">
+                                    <input type="checkbox" id="sourceFacebookGroups">
+                                    <span class="custom-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="searchFrequency" class="text-sm font-medium mb-2 block">Search Frequency</label>
+                        <div class="relative">
+                            <select id="searchFrequency" class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1">
+                                <option value="1min">Every Minute (Premium)</option>
+                                <option value="5min" selected>Every 5 Minutes</option>
+                                <option value="15min">Every 15 Minutes</option>
+                                <option value="30min">Every 30 Minutes</option>
+                                <option value="1hour">Every Hour</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="excludedKeywords" class="text-sm font-medium mb-2 block">Excluded Keywords</label>
+                        <input type="text" id="excludedKeywords" placeholder="e.g., unpaid, volunteer, internship (comma separated)" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                        <p class="text-xs text-gray-500 mt-1">
+                            Jobs containing these keywords will be automatically filtered out
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Privacy & Security -->
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                <div class="flex flex-col space-y-1.5 p-6">
+                    <div class="flex items-center gap-2">
+                        <i data-feather="shield" class="w-5 h-5 text-blue-600"></i>
+                        <h3 class="font-semibold whitespace-nowrap leading-none tracking-tight">Privacy & Security</h3>
+                    </div>
+                    <p class="text-sm text-muted-foreground text-gray-600">Manage your data privacy and security settings</p>
+                </div>
+                <div class="p-6 pt-0 space-y-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <label class="text-base font-medium">Two-Factor Authentication</label>
+                                <p class="text-sm text-gray-600">Add an extra layer of security to your account</p>
+                            </div>
+                            <button id="enable2FA" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2">
+                                Enable
+                            </button>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <label class="text-base font-medium">Data Encryption</label>
+                                <p class="text-sm text-gray-600">All personal data encrypted with AES-256</p>
+                            </div>
+                            <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 bg-green-100 text-green-800">Active</span>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <label class="text-base font-medium">Anonymous Analytics</label>
+                                <p class="text-sm text-gray-600">Help improve TutorPulse with anonymous usage data</p>
+                            </div>
+                            <label class="custom-switch">
+                                <input type="checkbox" id="anonymousAnalytics" checked>
+                                <span class="custom-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <label class="text-base font-medium">Marketing Communications</label>
+                                <p class="text-sm text-gray-600">Receive updates about new features and tips</p>
+                            </div>
+                            <label class="custom-switch">
+                                <input type="checkbox" id="marketingCommunications">
+                                <span class="custom-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t">
+                        <div class="space-y-3">
+                            <button id="downloadMyData" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full">
+                                Download My Data
+                            </button>
+                            <button id="deleteAccount" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full text-red-600 hover:text-red-700">
+                                Delete Account
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end space-x-3">
+                <button id="resetToDefaults" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">Reset to Defaults</button>
+                <button id="saveAllSettings" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 bg-blue-600 text-white hover:bg-blue-700">Save All Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification-container"></div>
+
+    <!-- Feather Icons Script -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+
+        // --- Notification Functionality ---
+        function showNotification(message) {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = 'notification-item';
+            notification.textContent = message;
+
+            container.appendChild(notification);
+
+            // Automatically remove the notification after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000); // 3000ms = 3 seconds
+        }
+
+        // --- Slider Functionality ---
+        const applicationsSlider = document.getElementById('applications-slider');
+        const applicationsValue = document.getElementById('applications-value');
+
+        if (applicationsSlider && applicationsValue) {
+            applicationsSlider.addEventListener('input', function() {
+                applicationsValue.textContent = this.value;
+                showNotification(`Maximum Applications per Day set to: ${this.value}`);
+            });
+        }
+
+        // --- Switch Functionality ---
+        document.querySelectorAll('.custom-switch input[type="checkbox"]').forEach(switchInput => {
+            switchInput.addEventListener('change', function() {
+                const labelText = this.closest('.flex.items-center.justify-between')?.querySelector('span')?.textContent ||
+                                  this.closest('div')?.querySelector('label')?.textContent;
+                const status = this.checked ? 'Enabled' : 'Disabled';
+                if (labelText) {
+                    showNotification(`${labelText.trim()} is now ${status}`);
+                } else {
+                    showNotification(`Setting changed: ${status}`);
+                }
+            });
+        });
+
+        // --- Select Dropdown Functionality ---
+        document.getElementById('applicationFrequency').addEventListener('change', function() {
+            showNotification(`Application Frequency set to: ${this.options[this.selectedIndex].text}`);
+        });
+
+        document.getElementById('jobMatchScore').addEventListener('change', function() {
+            showNotification(`Minimum Job Match Score set to: ${this.options[this.selectedIndex].text}`);
+        });
+
+        document.getElementById('searchFrequency').addEventListener('change', function() {
+            showNotification(`Search Frequency set to: ${this.options[this.selectedIndex].text}`);
+        });
+
+        // --- Input Field Functionality ---
+        document.getElementById('excludedKeywords').addEventListener('change', function() {
+            showNotification(`Excluded Keywords updated to: "${this.value}"`);
+        });
+
+        document.getElementById('quietHoursFrom').addEventListener('change', function() {
+            showNotification(`Quiet Hours 'From' set to: ${this.value}`);
+        });
+
+        document.getElementById('quietHoursTo').addEventListener('change', function() {
+            showNotification(`Quiet Hours 'To' set to: ${this.value}`);
+        });
+
+        // --- Button Functionality ---
+        document.getElementById('enable2FA').addEventListener('click', function() {
+            showNotification('Two-Factor Authentication: Feature not yet implemented.');
+        });
+
+        document.getElementById('downloadMyData').addEventListener('click', function() {
+            showNotification('Downloading your data... (Simulated)');
+            // In a real application, you would trigger a file download here.
+        });
+
+        document.getElementById('deleteAccount').addEventListener('click', function() {
+            showNotification('Account deletion initiated. Please confirm via email. (Simulated)');
+            // In a real application, you would show a confirmation dialog.
+        });
+
+        document.getElementById('resetToDefaults').addEventListener('click', function() {
+            showNotification('Settings have been reset to default values. (Simulated)');
+            // In a real application, you would reset form values here.
+        });
+
+        document.getElementById('saveAllSettings').addEventListener('click', function() {
+            showNotification('All settings saved successfully! (Simulated)');
+            // In a real application, you would collect all form data and send it to a server.
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TutorPulse Pricing</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom styling for buttons, similar to shadcn/ui buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            border-radius: 0.375rem; /* rounded-md */
+            font-size: 0.875rem; /* text-sm */
+            font-weight: 500; /* font-medium */
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+            transition-duration: 0.15s;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            height: 2.5rem; /* h-10 */
+            padding-left: 1rem; /* px-4 */
+            padding-right: 1rem; /* px-4 */
+        }
+
+        .btn-primary {
+            background-color: #2563eb; /* blue-600 */
+            color: #ffffff; /* text-white */
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .btn-primary:hover {
+            background-color: #1d4ed8; /* blue-700 */
+        }
+
+        .btn-outline {
+            border: 1px solid #e2e8f0; /* border-input */
+            background-color: #ffffff; /* bg-background */
+            color: #0f172a; /* text-foreground */
+        }
+        .btn-outline:hover {
+            background-color: #f1f5f9; /* hover:bg-accent */
+            color: #0f172a; /* hover:text-accent-foreground */
+        }
+
+        .btn-ghost {
+            background-color: transparent;
+            color: #64748b; /* text-gray-500 */
+        }
+        .btn-ghost:hover {
+            background-color: #f1f5f9; /* hover:bg-accent */
+            color: #0f172a; /* hover:text-accent-foreground */
+        }
+
+        /* Notification styling */
+        #notification-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none; /* Allows clicks to pass through to elements behind */
+        }
+
+        .notification-item {
+            background-color: #dcfce7; /* green-100 */
+            color: #166534; /* green-800 */
+            padding: 8px 15px; /* Smaller padding */
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transform: translateX(100%);
+            animation: fadeInRight 0.3s forwards, fadeOut 0.5s forwards 2.5s; /* Fade in, then fade out after 2.5s delay */
+            min-width: 180px; /* Slightly smaller min-width */
+            max-width: 280px; /* Slightly smaller max-width */
+            word-wrap: break-word;
+            pointer-events: auto; /* Re-enable pointer events for the notification itself */
+            font-size: 0.875rem; /* text-sm */
+            border: 1px solid #86efac; /* green-300 for border */
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white border-b sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="/" class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-sm">TP</span>
+                </div>
+                <span class="text-xl font-bold text-gray-900">TutorPulse</span>
+            </a>
+
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="/dashboard" class="text-gray-600 hover:text-gray-900">
+                    Dashboard
+                </a>
+                <a href="/profile" class="text-gray-600 hover:text-gray-900">
+                    Profile
+                </a>
+                <a href="/settings" class="text-gray-600 hover:text-gray-900">
+                    Settings
+                </a>
+                <a href="/pricing" class="text-blue-600 font-medium">
+                    Pricing
+                </a>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <button class="btn btn-ghost">
+                    <i data-feather="user" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-12">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl">Simple, Transparent Pricing</h1>
+            <p class="mt-4 text-xl text-gray-600">Choose the plan that's right for your tutoring journey.</p>
+        </div>
+
+        <!-- Pricing Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <!-- Basic Plan -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 flex flex-col">
+                <div class="p-8 text-center">
+                    <h2 class="text-2xl font-bold text-gray-900">Basic</h2>
+                    <p class="mt-4 text-gray-600">Perfect for new tutors or occasional use.</p>
+                    <p class="mt-6 text-5xl font-extrabold text-gray-900">
+                        $0
+                        <span class="text-xl font-medium text-gray-500">/month</span>
+                    </p>
+                </div>
+                <div class="p-8 border-t border-gray-200 flex-grow">
+                    <ul role="list" class="space-y-4">
+                        <li class="flex items-center">
+                            <i data-feather="check" class="flex-shrink-0 w-6 h-6 text-green-500"></i>
+                            <span class="ml-3 text-base text-gray-600">Up to 5 AutoApplications/day</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check" class="flex-shrink-0 w-6 h-6 text-green-500"></i>
+                            <span class="ml-3 text-base text-gray-600">Basic job matching</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check" class="flex-shrink-0 w-6 h-6 text-green-500"></i>
+                            <span class="ml-3 text-base text-gray-600">Email notifications</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="x" class="flex-shrink-0 w-6 h-6 text-red-500"></i>
+                            <span class="ml-3 text-base text-gray-400 line-through">Premium job sources</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="x" class="flex-shrink-0 w-6 h-6 text-red-500"></i>
+                            <span class="ml-3 text-base text-gray-400 line-through">SMS notifications</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="p-8 border-t border-gray-200">
+                    <button class="btn btn-primary w-full" onclick="showNotification('Basic plan selected!')">
+                        Current Plan
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pro Plan -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden border-2 border-blue-600 flex flex-col">
+                <div class="p-8 text-center bg-blue-600 text-white">
+                    <h2 class="text-2xl font-bold">Pro</h2>
+                    <p class="mt-4">Ideal for growing your tutoring business.</p>
+                    <p class="mt-6 text-5xl font-extrabold">
+                        $29
+                        <span class="text-xl font-medium">/month</span>
+                    </p>
+                </div>
+                <div class="p-8 flex-grow">
+                    <ul role="list" class="space-y-4">
+                        <li class="flex items-center">
+                            <i data-feather="check" class="flex-shrink-0 w-6 h-6 text-green-500"></i>
+                            <span class="ml-3 text-base text-gray-600">Unlimited AutoApplications</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check" class="flex-shrink-0 w-6 h-6 text-green-500"></i>
+                            <span class="ml-3 text-base text-gray-600">Advanced job matching</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check" class="flex-shrink-0 w-6 h-6 text-green-500"></i>
+                            <span class="ml-3 text-base text-gray-600">Email & Push notifications</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check" class="flex-shrink-0 w-6 h-6 text-green-500"></i>
+                            <span class="ml-3 text-base text-gray-600">Access to premium job sources</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="x" class="flex-shrink-0 w-6 h-6 text-red-500"></i>
+                            <span class="ml-3 text-base text-gray-400 line-through">Dedicated account manager</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="p-8 border-t border-gray-200">
+                    <button class="btn btn-primary w-full bg-blue-600 hover:bg-blue-700" onclick="showNotification('Pro plan selected!')">
+                        Choose Pro
+                    </button>
+                </div>
+            </div>
+
+            <!-- Enterprise Plan -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 flex flex-col">
+                <div class="p-8 text-center">
+                    <h2 class="text-2xl font-bold text-gray-900">Enterprise</h2>
+                    <p class="mt-4 text-gray-600">For agencies and large tutoring organizations.</p>
+                    <p class="mt-6 text-5xl font-extrabold text-gray-900">
+                        Custom
+                        <span class="text-xl font-medium text-gray-500">/quote</span>
+                    </p>
+                </div>
+                <div class="p-8 border-t border-gray-200 flex-grow">
+                    <ul role="list" class="space-y-4">
+                        <li class="flex items-center">
+                            <i data-feather="check" class="flex-shrink-0 w-6 h-6 text-green-500"></i>
+                            <span class="ml-3 text-base text-gray-600">Everything in Pro</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check" class="flex-shrink-0 w-6 h-6 text-green-500"></i>
+                            <span class="ml-3 text-base text-gray-600">Dedicated account manager</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check" class="flex-shrink-0 w-6 h-6 text-green-500"></i>
+                            <span class="ml-3 text-base text-gray-600">Custom integrations</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check" class="flex-shrink-0 w-6 h-6 text-green-500"></i>
+                            <span class="ml-3 text-base text-gray-600">Priority support</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check" class="flex-shrink-0 w-6 h-6 text-green-500"></i>
+                            <span class="ml-3 text-base text-gray-600">Onboarding & training</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="p-8 border-t border-gray-200">
+                    <button class="btn btn-outline w-full" onclick="showNotification('Contact sales for Enterprise plan!')">
+                        Contact Sales
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="max-w-4xl mx-auto mt-20">
+            <h2 class="text-3xl font-bold text-gray-900 text-center mb-8">Frequently Asked Questions</h2>
+            <div class="space-y-6">
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">What is AutoApply?</h3>
+                    <p class="text-gray-700">AutoApply is a feature that automatically applies to tutoring jobs that match your specified criteria, saving you time and increasing your chances of finding opportunities.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Can I change my plan later?</h3>
+                    <p class="text-gray-700">Yes, you can upgrade or downgrade your plan at any time directly from your account settings. Changes will take effect immediately, and billing will be prorated.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Do you offer a free trial for Pro?</h3>
+                    <p class="text-gray-700">While we don't offer a separate free trial for the Pro plan, our Basic plan is completely free forever, allowing you to experience core features before committing.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification-container"></div>
+
+    <!-- Feather Icons Script -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+
+        // --- Notification Functionality ---
+        function showNotification(message) {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = 'notification-item';
+            notification.textContent = message;
+
+            container.appendChild(notification);
+
+            // Automatically remove the notification after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000); // 3000ms = 3 seconds
+        }
+    </script>
+</body>
+</html>
