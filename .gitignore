@@ -1,1 +1,26 @@
-node_modules
+# Dependencies
+/node_modules
+
+# Build artifacts
+/dist
+/build
+/out
+
+# Log files
+npm-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Other temporary files
+*.log
+*.tmp
